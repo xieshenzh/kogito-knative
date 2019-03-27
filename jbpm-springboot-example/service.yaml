@@ -1,0 +1,41 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: submarine-jbpm-springboot-example
+spec:
+  runLatest:
+    configuration:
+      build:
+        apiVersion: build.knative.dev/v1alpha1
+        kind: Build
+        spec:
+          serviceAccountName: build-bot
+          source:
+            git:
+              revision: master
+              url: https://github.com/xiezhang7/submarine-knative.git
+          template:
+            arguments:
+              - name: SUBMARINE_BOM_CONTEXT_DIR
+                value: target/submarine-bom
+              - name: SUBMARINE_RUNTIMES_CONTEXT_DIR
+                value: target/submarine-runtimes
+              - name: SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_CONTEXT_DIR
+                value: target/submarine-examples/jbpm-springboot-example
+              - name: SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_DOCKER_CONTEXT_DIR
+                value: jbpm-springboot-example
+              - name: SUBMARINE_JBPM_SPRINGBOOT_JAR_FILE
+                value: target/submarine-examples/jbpm-springboot-example/target/jbpm-springboot-example-8.0.0-SNAPSHOT.jar
+              - name: SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_IMAGE
+                value: xiezhang7/jbpm-springboot-example:0.1
+            name: build-submarine-jbpm-springboot-example
+          timeout: 20m
+      revisionTemplate:
+        metadata:
+          labels:
+            app: submarine-jbpm-springboot-example
+        spec:
+          container:
+            image: xiezhang7/jbpm-springboot-example:0.1
+            ports:
+              - containerPort: 8080

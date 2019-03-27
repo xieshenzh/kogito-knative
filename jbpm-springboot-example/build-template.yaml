@@ -1,0 +1,78 @@
+apiVersion: build.knative.dev/v1alpha1
+kind: BuildTemplate
+metadata:
+  name: build-submarine-jbpm-springboot-example
+spec:
+  parameters:
+  - name: SUBMARINE_BOM_CONTEXT_DIR
+    description: The context directory from where to run the submarine-bom build.
+  - name: SUBMARINE_RUNTIMES_CONTEXT_DIR
+    description: The context directory from where to run the submarine-runtimes build.
+  - name: SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_CONTEXT_DIR
+    description: The context directory from where to run the submarine-jbpm-springboot-example build.
+  - name: SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_DOCKER_CONTEXT_DIR
+    description: The context directory from where to run the submarine-jbpm-springboot-example docker build.
+  - name: SUBMARINE_JBPM_SPRINGBOOT_JAR_FILE
+    description: The path to the springboot jar file.
+  - name: SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_IMAGE
+    description: The name of the image to push.
+  steps:
+  - args:
+    - clean
+    - install
+    image: gcr.io/cloud-builders/mvn
+    name: build-submarine-knative
+    volumeMounts:
+    - mountPath: /builder/home/.m2
+      name: m2-cache
+    workingDir: /workspace
+  - args:
+    - clean
+    - install
+    - -DskipTests=true
+    image: gcr.io/cloud-builders/mvn
+    name: build-submarine-bom
+    volumeMounts:
+    - mountPath: /builder/home/.m2
+      name: m2-cache
+    workingDir: /workspace/${SUBMARINE_BOM_CONTEXT_DIR}
+  - args:
+    - clean
+    - install
+    - -DskipTests=true
+    image: gcr.io/cloud-builders/mvn
+    name: build-submarine-runtimes
+    volumeMounts:
+    - mountPath: /builder/home/.m2
+      name: m2-cache
+    workingDir: /workspace/${SUBMARINE_RUNTIMES_CONTEXT_DIR}
+  - args:
+    - clean
+    - install
+    image: gcr.io/cloud-builders/mvn
+    name: build-submarine-jbpm-springboot-example
+    volumeMounts:
+    - mountPath: /builder/home/.m2
+      name: m2-cache
+    workingDir: /workspace/${SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_CONTEXT_DIR}
+  - args:
+    - --context=/workspace/${SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_DOCKER_CONTEXT_DIR}
+    - --dockerfile=/workspace/${SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_DOCKER_CONTEXT_DIR}/Dockerfile
+    - --destination=${SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_IMAGE}
+    - --build-arg=JAR_FILE=/workspace/${SUBMARINE_JBPM_SPRINGBOOT_JAR_FILE}
+    env:
+    - name: DOCKER_CONFIG
+      value: /builder/home/.docker
+    image: gcr.io/kaniko-project/executor
+    name: submarine-jbpm-springboot-example-docker-push
+    volumeMounts:
+    - mountPath: /cache
+      name: kaniko-cache
+    workingDir: /workspace/${SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_DOCKER_CONTEXT_DIR}
+  volumes:
+  - name: m2-cache
+    persistentVolumeClaim:
+      claimName: m2-cache
+  - name: kaniko-cache
+    persistentVolumeClaim:
+      claimName: kaniko-cache
