@@ -16,6 +16,18 @@ spec:
               url: https://github.com/xiezhang7/submarine-knative.git
           template:
             arguments:
+              - name: SUBMARINE_BOM_REPO_URL
+                value: https://github.com/kiegroup/submarine-bom.git
+              - name: SUBMARINE_BOM_REPO_BRANCH
+                value: master
+              - name: SUBMARINE_RUNTIMES_REPO_URL
+                value: https://github.com/kiegroup/submarine-runtimes.git
+              - name: SUBMARINE_RUNTIMES_REPO_BRANCH
+                value: master
+              - name: SUBMARINE_EXAMPLES_REPO_URL
+                value: https://github.com/xiezhang7/submarine-examples.git
+              - name: SUBMARINE_EXAMPLES_REPO_BRANCH
+                value: knative-poc
               - name: SUBMARINE_BOM_CONTEXT_DIR
                 value: target/submarine-bom
               - name: SUBMARINE_RUNTIMES_CONTEXT_DIR
@@ -23,9 +35,9 @@ spec:
               - name: SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_CONTEXT_DIR
                 value: target/submarine-examples/jbpm-springboot-example
               - name: SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_DOCKER_CONTEXT_DIR
-                value: jbpm-springboot-example
+                value: target/submarine-examples/jbpm-springboot-example
               - name: SUBMARINE_JBPM_SPRINGBOOT_JAR_FILE
-                value: target/submarine-examples/jbpm-springboot-example/target/jbpm-springboot-example-8.0.0-SNAPSHOT.jar
+                value: target/jbpm-springboot-example-8.0.0-SNAPSHOT.jar
               - name: SUBMARINE_JBPM_SPRINGBOOT_EXAMPLE_IMAGE
                 value: xiezhang7/jbpm-springboot-example:0.1
             name: build-submarine-jbpm-springboot-example
