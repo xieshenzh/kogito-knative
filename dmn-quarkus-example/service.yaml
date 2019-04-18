@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
-  name: submarine-jbpm-quarkus-example
+  name: submarine-dmn-quarkus-example
 spec:
   runLatest:
     configuration:
@@ -32,23 +32,23 @@ spec:
                 value: target/submarine-bom
               - name: SUBMARINE_RUNTIMES_CONTEXT_DIR
                 value: target/submarine-runtimes
-              - name: SUBMARINE_JBPM_QUARKUS_EXAMPLE_CONTEXT_DIR
-                value: target/submarine-examples/jbpm-quarkus-example
-              - name: SUBMARINE_JBPM_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR
-                value: target/submarine-examples/jbpm-quarkus-example
-              - name: SUBMARINE_JBPM_QUARKUS_TARGET_FILE
-                value: jbpm-quarkus-example-8.0.0-SNAPSHOT-runner
-              - name: SUBMARINE_JBPM_QUARKUS_EXAMPLE_IMAGE
-                value: xiezhang7/jbpm-quarkus-example:0.1
-            name: build-submarine-jbpm-quarkus-example
+              - name: SUBMARINE_DMN_QUARKUS_EXAMPLE_CONTEXT_DIR
+                value: target/submarine-examples/dmn-quarkus-example
+              - name: SUBMARINE_DMN_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR
+                value: target/submarine-examples/dmn-quarkus-example
+              - name: SUBMARINE_DMN_QUARKUS_TARGET_FILE
+                value: dmn-quarkus-example-8.0.0-SNAPSHOT-runner
+              - name: SUBMARINE_DMN_QUARKUS_EXAMPLE_IMAGE
+                value: xiezhang7/dmn-quarkus-example:0.1
+            name: build-submarine-dmn-quarkus-example
           timeout: 20m
       revisionTemplate:
         metadata:
           labels:
-            app: submarine-jbpm-quarkus-example
+            app: submarine-dmn-quarkus-example
         spec:
           container:
-            image: xiezhang7/jbpm-quarkus-example:0.1
+            image: xiezhang7/dmn-quarkus-example:0.1
             ports:
               - containerPort: 8080
           initContainers:
@@ -56,5 +56,5 @@ spec:
               image: quay.io/rhdevelopers/build-status-checker
               args:
                 - poll
-                - --buildname=build-submarine-jbpm-quarkus-example
+                - --buildname=build-submarine-dmn-quarkus-example
           serviceAccountName: build-bot
