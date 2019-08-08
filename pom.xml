@@ -4,23 +4,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.submarine</groupId>
-  <artifactId>submarine-knative</artifactId>
+  <groupId>org.kie.kogito</groupId>
+  <artifactId>kogito-knative</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Submarine Knative</name>
+  <name>Kogito Knative</name>
   <description>
-    Submarine Knative
+    Kogito Knative
   </description>
 
   <properties>
-    <submarine-bom-url>https://github.com/kiegroup/submarine-bom.git</submarine-bom-url>
-    <submarine-bom-branch>master</submarine-bom-branch>
-    <submarine-runtimes-url>https://github.com/kiegroup/submarine-runtimes.git</submarine-runtimes-url>
-    <submarine-runtimes-branch>master</submarine-runtimes-branch>
-    <submarine-examples-url>https://github.com/kiegroup/submarine-examples.git</submarine-examples-url>
-    <submarine-examples-branch>master</submarine-examples-branch>
+    <kogito-bom-url>https://github.com/kiegroup/kogito-bom.git</kogito-bom-url>
+    <kogito-bom-branch>master</kogito-bom-branch>
+    <kogito-runtimes-url>https://github.com/kiegroup/kogito-runtimes.git</kogito-runtimes-url>
+    <kogito-runtimes-branch>master</kogito-runtimes-branch>
+    <kogito-examples-url>https://github.com/kiegroup/kogito-examples.git</kogito-examples-url>
+    <kogito-examples-branch>master</kogito-examples-branch>
   </properties>
 
   <build>
@@ -31,7 +31,7 @@
         <version>1.6.0</version>
         <executions>
           <execution>
-            <id>checkout-submarine-bom</id>
+            <id>checkout-kogito-bom</id>
             <goals>
               <goal>exec</goal>
             </goals>
@@ -41,15 +41,15 @@
               <arguments>
                 <argument>clone</argument>
                 <argument>-b</argument>
-                <argument>${submarine-bom-branch}</argument>
-                <argument>${submarine-bom-url}</argument>
-                <argument>target/submarine-bom</argument>
+                <argument>${kogito-bom-branch}</argument>
+                <argument>${kogito-bom-url}</argument>
+                <argument>target/kogito-bom</argument>
               </arguments>
             </configuration>
           </execution>
 
           <execution>
-            <id>checkout-submarine-runtimes</id>
+            <id>checkout-kogito-runtimes</id>
             <goals>
               <goal>exec</goal>
             </goals>
@@ -59,15 +59,15 @@
               <arguments>
                 <argument>clone</argument>
                 <argument>-b</argument>
-                <argument>${submarine-runtimes-branch}</argument>
-                <argument>${submarine-runtimes-url}</argument>
-                <argument>target/submarine-runtimes</argument>
+                <argument>${kogito-runtimes-branch}</argument>
+                <argument>${kogito-runtimes-url}</argument>
+                <argument>target/kogito-runtimes</argument>
               </arguments>
             </configuration>
           </execution>
 
           <execution>
-            <id>checkout-submarine-examples</id>
+            <id>checkout-kogito-examples</id>
             <goals>
               <goal>exec</goal>
             </goals>
@@ -77,9 +77,9 @@
               <arguments>
                 <argument>clone</argument>
                 <argument>-b</argument>
-                <argument>${submarine-examples-branch}</argument>
-                <argument>${submarine-examples-url}</argument>
-                <argument>target/submarine-examples</argument>
+                <argument>${kogito-examples-branch}</argument>
+                <argument>${kogito-examples-url}</argument>
+                <argument>target/kogito-examples</argument>
               </arguments>
             </configuration>
           </execution>

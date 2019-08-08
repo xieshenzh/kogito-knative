@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
-  name: submarine-jbpm-quarkus-example
+  name: kogito-jbpm-quarkus-example
 spec:
   runLatest:
     configuration:
@@ -13,39 +13,39 @@ spec:
           source:
             git:
               revision: master
-              url: https://github.com/xiezhang7/submarine-knative.git
+              url: https://github.com/xiezhang7/kogito-knative.git
           template:
             arguments:
-              - name: SUBMARINE_BOM_REPO_URL
-                value: https://github.com/kiegroup/submarine-bom.git
-              - name: SUBMARINE_BOM_REPO_BRANCH
+              - name: KOGITO_BOM_REPO_URL
+                value: https://github.com/kiegroup/kogito-bom.git
+              - name: KOGITO_BOM_REPO_BRANCH
                 value: master
-              - name: SUBMARINE_RUNTIMES_REPO_URL
-                value: https://github.com/xiezhang7/submarine-runtimes.git
-              - name: SUBMARINE_RUNTIMES_REPO_BRANCH
+              - name: KOGITO_RUNTIMES_REPO_URL
+                value: https://github.com/xiezhang7/kogito-runtimes.git
+              - name: KOGITO_RUNTIMES_REPO_BRANCH
                 value: knative-poc
-              - name: SUBMARINE_EXAMPLES_REPO_URL
-                value: https://github.com/xiezhang7/submarine-examples.git
-              - name: SUBMARINE_EXAMPLES_REPO_BRANCH
+              - name: KOGITO_EXAMPLES_REPO_URL
+                value: https://github.com/xiezhang7/kogito-examples.git
+              - name: KOGITO_EXAMPLES_REPO_BRANCH
                 value: knative-poc
-              - name: SUBMARINE_BOM_CONTEXT_DIR
-                value: target/submarine-bom
-              - name: SUBMARINE_RUNTIMES_CONTEXT_DIR
-                value: target/submarine-runtimes
-              - name: SUBMARINE_JBPM_QUARKUS_EXAMPLE_CONTEXT_DIR
-                value: target/submarine-examples/jbpm-quarkus-example
-              - name: SUBMARINE_JBPM_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR
-                value: target/submarine-examples/jbpm-quarkus-example
-              - name: SUBMARINE_JBPM_QUARKUS_TARGET_FILE
+              - name: KOGITO_BOM_CONTEXT_DIR
+                value: target/kogito-bom
+              - name: KOGITO_RUNTIMES_CONTEXT_DIR
+                value: target/kogito-runtimes
+              - name: KOGITO_JBPM_QUARKUS_EXAMPLE_CONTEXT_DIR
+                value: target/kogito-examples/jbpm-quarkus-example
+              - name: KOGITO_JBPM_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR
+                value: target/kogito-examples/jbpm-quarkus-example
+              - name: KOGITO_JBPM_QUARKUS_TARGET_FILE
                 value: jbpm-quarkus-example-8.0.0-SNAPSHOT-runner
-              - name: SUBMARINE_JBPM_QUARKUS_EXAMPLE_IMAGE
+              - name: KOGITO_JBPM_QUARKUS_EXAMPLE_IMAGE
                 value: xiezhang7/jbpm-quarkus-example:0.1
-            name: build-submarine-jbpm-quarkus-example
+            name: build-kogito-jbpm-quarkus-example
           timeout: 20m
       revisionTemplate:
         metadata:
           labels:
-            app: submarine-jbpm-quarkus-example
+            app: kogito-jbpm-quarkus-example
         spec:
           container:
             image: xiezhang7/jbpm-quarkus-example:0.1
@@ -56,5 +56,5 @@ spec:
               image: quay.io/rhdevelopers/build-status-checker
               args:
                 - poll
-                - --buildname=build-submarine-jbpm-quarkus-example
+                - --buildname=build-kogito-jbpm-quarkus-example
           serviceAccountName: build-bot

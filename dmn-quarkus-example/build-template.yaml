@@ -1,43 +1,43 @@
 apiVersion: build.knative.dev/v1alpha1
 kind: BuildTemplate
 metadata:
-  name: build-submarine-dmn-quarkus-example
+  name: build-kogito-dmn-quarkus-example
 spec:
   parameters:
-  - name: SUBMARINE_BOM_REPO_URL
-    description: The url of submarine-bom repo to build.
-  - name: SUBMARINE_BOM_REPO_BRANCH
-    description: The branch of submarine-bom repo to build.
-  - name: SUBMARINE_RUNTIMES_REPO_URL
-    description: The url of submarine-runtimes repo to build.
-  - name: SUBMARINE_RUNTIMES_REPO_BRANCH
-    description: The branch of submarine-runtimes repo to build.
-  - name: SUBMARINE_EXAMPLES_REPO_URL
-    description: The url of submarine-examples repo to build.
-  - name: SUBMARINE_EXAMPLES_REPO_BRANCH
-    description: The branch of submarine-examples repo to build.
-  - name: SUBMARINE_BOM_CONTEXT_DIR
-    description: The context directory from where to run the submarine-bom build.
-  - name: SUBMARINE_RUNTIMES_CONTEXT_DIR
-    description: The context directory from where to run the submarine-runtimes build.
-  - name: SUBMARINE_DMN_QUARKUS_EXAMPLE_CONTEXT_DIR
-    description: The context directory from where to run the submarine-dmn-quarkus-example build.
-  - name: SUBMARINE_DMN_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR
-    description: The context directory from where to run the submarine-dmn-quarkus-example docker build.
-  - name: SUBMARINE_DMN_QUARKUS_EXAMPLE_IMAGE
+  - name: KOGITO_BOM_REPO_URL
+    description: The url of kogito-bom repo to build.
+  - name: KOGITO_BOM_REPO_BRANCH
+    description: The branch of kogito-bom repo to build.
+  - name: KOGITO_RUNTIMES_REPO_URL
+    description: The url of kogito-runtimes repo to build.
+  - name: KOGITO_RUNTIMES_REPO_BRANCH
+    description: The branch of kogito-runtimes repo to build.
+  - name: KOGITO_EXAMPLES_REPO_URL
+    description: The url of kogito-examples repo to build.
+  - name: KOGITO_EXAMPLES_REPO_BRANCH
+    description: The branch of kogito-examples repo to build.
+  - name: KOGITO_BOM_CONTEXT_DIR
+    description: The context directory from where to run the kogito-bom build.
+  - name: KOGITO_RUNTIMES_CONTEXT_DIR
+    description: The context directory from where to run the kogito-runtimes build.
+  - name: KOGITO_DMN_QUARKUS_EXAMPLE_CONTEXT_DIR
+    description: The context directory from where to run the kogito-dmn-quarkus-example build.
+  - name: KOGITO_DMN_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR
+    description: The context directory from where to run the kogito-dmn-quarkus-example docker build.
+  - name: KOGITO_DMN_QUARKUS_EXAMPLE_IMAGE
     description: The name of the image to push.
   steps:
   - args:
     - clean
     - install
-    - -Dsubmarine-bom-url=${SUBMARINE_BOM_REPO_URL}
-    - -Dsubmarine-bom-branch=${SUBMARINE_BOM_REPO_BRANCH}
-    - -Dsubmarine-runtimes-url=${SUBMARINE_RUNTIMES_REPO_URL}
-    - -Dsubmarine-runtimes-branch=${SUBMARINE_RUNTIMES_REPO_BRANCH}
-    - -Dsubmarine-examples-url=${SUBMARINE_EXAMPLES_REPO_URL}
-    - -Dsubmarine-examples-branch=${SUBMARINE_EXAMPLES_REPO_BRANCH}
+    - -Dkogito-bom-url=${KOGITO_BOM_REPO_URL}
+    - -Dkogito-bom-branch=${KOGITO_BOM_REPO_BRANCH}
+    - -Dkogito-runtimes-url=${KOGITO_RUNTIMES_REPO_URL}
+    - -Dkogito-runtimes-branch=${KOGITO_RUNTIMES_REPO_BRANCH}
+    - -Dkogito-examples-url=${KOGITO_EXAMPLES_REPO_URL}
+    - -Dkogito-examples-branch=${KOGITO_EXAMPLES_REPO_BRANCH}
     image: gcr.io/cloud-builders/mvn
-    name: build-submarine-knative
+    name: build-kogito-knative
     volumeMounts:
     - mountPath: /builder/home/.m2
       name: m2-cache
@@ -47,44 +47,44 @@ spec:
     - install
     - -DskipTests=true
     image: gcr.io/cloud-builders/mvn
-    name: build-submarine-bom
+    name: build-kogito-bom
     volumeMounts:
     - mountPath: /builder/home/.m2
       name: m2-cache
-    workingDir: /workspace/${SUBMARINE_BOM_CONTEXT_DIR}
+    workingDir: /workspace/${KOGITO_BOM_CONTEXT_DIR}
   - args:
     - clean
     - install
     - -DskipTests=true
     image: gcr.io/cloud-builders/mvn
-    name: build-submarine-runtimes
+    name: build-kogito-runtimes
     volumeMounts:
     - mountPath: /builder/home/.m2
       name: m2-cache
-    workingDir: /workspace/${SUBMARINE_RUNTIMES_CONTEXT_DIR}
+    workingDir: /workspace/${KOGITO_RUNTIMES_CONTEXT_DIR}
   - args:
     - clean
     - package
     image: gcr.io/cloud-builders/mvn
-    name: build-submarine-dmn-quarkus-example
+    name: build-kogito-dmn-quarkus-example
     volumeMounts:
     - mountPath: /builder/home/.m2
       name: m2-cache
-    workingDir: /workspace/${SUBMARINE_DMN_QUARKUS_EXAMPLE_CONTEXT_DIR}
+    workingDir: /workspace/${KOGITO_DMN_QUARKUS_EXAMPLE_CONTEXT_DIR}
   - args:
-    - --context=/workspace/${SUBMARINE_DMN_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR}
-    - --dockerfile=/workspace/${SUBMARINE_DMN_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR}/Dockerfile
-    - --destination=${SUBMARINE_DMN_QUARKUS_EXAMPLE_IMAGE}
-    - --build-arg=TARGET_FILE=${SUBMARINE_DMN_QUARKUS_TARGET_FILE}
+    - --context=/workspace/${KOGITO_DMN_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR}
+    - --dockerfile=/workspace/${KOGITO_DMN_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR}/Dockerfile
+    - --destination=${KOGITO_DMN_QUARKUS_EXAMPLE_IMAGE}
+    - --build-arg=TARGET_FILE=${KOGITO_DMN_QUARKUS_TARGET_FILE}
     env:
     - name: DOCKER_CONFIG
       value: /builder/home/.docker
     image: gcr.io/kaniko-project/executor
-    name: push-submarine-dmn-quarkus-example
+    name: push-kogito-dmn-quarkus-example
     volumeMounts:
     - mountPath: /cache
       name: kaniko-cache
-    workingDir: /workspace/${SUBMARINE_DMN_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR}
+    workingDir: /workspace/${KOGITO_DMN_QUARKUS_EXAMPLE_IMAGE_CONTEXT_DIR}
   volumes:
   - name: m2-cache
     persistentVolumeClaim:

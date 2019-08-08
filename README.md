@@ -1,1 +1,1 @@
-# submarine-knative
+# kogito-knative
